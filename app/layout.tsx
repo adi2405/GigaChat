@@ -4,6 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,12 +29,18 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${poppins.className} antialiased`}>
+        <body
+          className={cn(
+            `${poppins.className} antialiased`,
+            "bg-white dark:bg-[#313338]"
+          )}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             storageKey="gigachat-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>
