@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,6 +26,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FileUpload } from "../file-upload";
+import { useModal } from "@/hooks/use-modal-store";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -35,8 +37,12 @@ const formSchema = z.object({
   }),
 });
 
-export const InitialModal = () => {
+export const EditServerModal = () => {
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
+
+  const isModalOpen = isOpen && type === "editServer";
+  const { server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -46,25 +52,36 @@ export const InitialModal = () => {
     },
   });
 
+  useEffect(() => {
+    if (server) {
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
+    }
+  }, [server, form]);
+
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      await axios.patch(`/api/servers/${server?.id}`, values);
       form.reset();
       router.refresh();
-      window.location.reload();
+      onClose();
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-xl sm:text-2xl text-center font-bold">
-            Create your server
+            Edit your server
           </DialogTitle>
           <DialogDescription className="text-center to-zinc-500">
             Give your server a personality with a name and an image. You can
@@ -119,7 +136,7 @@ export const InitialModal = () => {
                 variant={"primary"}
                 className="cursor-pointer"
               >
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
