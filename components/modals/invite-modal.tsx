@@ -16,8 +16,10 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useModal } from "@/hooks/use-modal-store";
 import { useOrigin } from "@/hooks/use-origin";
+import { useRouter } from "next/navigation";
 
 export const InviteModal = () => {
+  const router = useRouter();
   const { onOpen, isOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
 
@@ -54,7 +56,15 @@ export const InviteModal = () => {
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isModalOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+          router.refresh();
+        }
+      }}
+    >
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-xl sm:text-2xl text-center font-bold">

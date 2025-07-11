@@ -5,7 +5,7 @@ import { currentProfile } from "@/lib/current-profile";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -62,7 +62,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const profile = await currentProfile();
