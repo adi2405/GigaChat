@@ -15,7 +15,7 @@ export const NavigationAction = () => {
           onClick={() => onOpen("createServer")}
           className="group flex items-center cursor-pointer"
         >
-          <div className="flex items-center justify-center bg-background dark:bg-neutral-700 mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] group-hover:bg-emerald-500! transition-all overflow-hidden">
+          <div className="flex items-center justify-center bg-background dark:bg-neutral-700 mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] group-hover:bg-emerald-500 dark:group-hover:bg-emerald-500 transition-all duration-300 overflow-hidden">
             <Plus
               className="group-hover:text-white transition text-emerald-500"
               size={25}

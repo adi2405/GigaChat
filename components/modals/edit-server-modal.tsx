@@ -53,11 +53,11 @@ export const EditServerModal = () => {
   });
 
   useEffect(() => {
-    if (server) {
+    if (server && isModalOpen) {
       form.setValue("name", server.name);
       form.setValue("imageUrl", server.imageUrl);
     }
-  }, [server, form]);
+  }, [server, form, isModalOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -65,8 +65,10 @@ export const EditServerModal = () => {
     try {
       await axios.patch(`/api/servers/${server?.id}`, values);
       form.reset();
-      router.refresh();
       onClose();
+      setTimeout(() => {
+        router.refresh();
+      }, 1000);
     } catch (error) {
       console.log(error);
     }

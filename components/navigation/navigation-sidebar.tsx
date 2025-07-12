@@ -27,7 +27,7 @@ export const NavigationSidebar = async () => {
   });
 
   return (
-    <div className="space-y-4 py-3 flex flex-col items-center h-full w-full text-primary dark:bg-[#1E1F22]">
+    <div className="space-y-4 py-3 flex flex-col items-center h-full w-full text-primary bg-[#E3E5E8] dark:bg-[#1E1F22]">
       <NavigationAction />
       <Separator className="h-[2px] w-10 mx-auto bg-zinc-300 dark:bg-zinc-700 rounded-md" />
       <ScrollArea className="flex-1 w-full">
@@ -46,7 +46,7 @@ export const NavigationSidebar = async () => {
         <UserButton
           appearance={{
             elements: {
-              avatarBox: "h-[48px]! w-[48px]!",
+              avatarBox: "!h-[48px] !w-[48px]",
             },
           }}
         />

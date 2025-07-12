@@ -4,7 +4,7 @@ import * as z from "zod";
 import qs from "query-string";
 import axios from "axios";
 import { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChannelType } from "@prisma/client";
@@ -48,41 +48,39 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelType),
 });
 
-export const CreateChannelModal = () => {
+export const EditChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
 
-  const isModalOpen = isOpen && type === "createChannel";
-  const { channelType } = data;
+  const isModalOpen = isOpen && type === "editChannel";
+  const { channel, server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType || ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelType.TEXT);
+    if (channel && isModalOpen) {
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
     }
-  }, [channelType, form]);
+  }, [form, channel?.id, channel?.name, channel?.type, isModalOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `/api/channels`,
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       });
-      await axios.post(url, values);
+      await axios.patch(url, values);
       form.reset();
       onClose();
       setTimeout(() => {
@@ -94,7 +92,6 @@ export const CreateChannelModal = () => {
   };
 
   const handleClose = () => {
-    form.reset();
     onClose();
   };
 
@@ -103,11 +100,11 @@ export const CreateChannelModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-xl sm:text-2xl text-center font-bold">
-            Create Channel
+            Edit Channel
           </DialogTitle>
           <DialogDescription className="text-center to-zinc-500">
-            Start a new conversation channel. Set a name, choose the type, and
-            you're ready to go.
+            Edit your conversation channel. Reset the name, and you're ready to
+            go.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -172,7 +169,7 @@ export const CreateChannelModal = () => {
                 variant={"primary"}
                 className="cursor-pointer"
               >
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
