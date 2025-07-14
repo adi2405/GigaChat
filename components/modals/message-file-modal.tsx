@@ -58,6 +58,7 @@ export const MessageFileModal = () => {
       await axios.post(url, {
         ...values,
         content: values.fileUrl,
+        fileType: values.fileType,
       });
       form.reset();
       handleClose();
