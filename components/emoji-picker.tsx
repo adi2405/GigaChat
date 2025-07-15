@@ -5,13 +5,15 @@ import EmojiPickerReact, { EmojiClickData, Theme } from "emoji-picker-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 
+import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface EmojiPickerProps {
   onChange: (value: string) => void;
+  className?: string;
 }
 
-export const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
+export const EmojiPicker = ({ onChange, className }: EmojiPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { resolvedTheme } = useTheme();
 
@@ -22,7 +24,12 @@ export const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger>
-        <Smile className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition cursor-pointer" />
+        <Smile
+          className={cn(
+            `text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition cursor-pointer`,
+            className
+          )}
+        />
       </PopoverTrigger>
       <PopoverContent
         side="right"
