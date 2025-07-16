@@ -1,13 +1,13 @@
 import { currentUser } from "@clerk/nextjs/server";
 
 import { db } from "./db";
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
 export const initialProfile = async () => {
   const user = await currentUser();
 
   if (!user) {
-    return new NextResponse("Unauthorized", { status: 401 });
+    return redirect("/");
   }
 
   const profile = await db.profile.findUnique({
