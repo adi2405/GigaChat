@@ -107,7 +107,7 @@ export const CreateChannelModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center to-zinc-500">
             Start a new conversation channel. Set a name, choose the type, and
-            you're ready to go.
+            you&apos;re ready to go.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

@@ -14,7 +14,7 @@ export default async function handler(
 
   try {
     const profile = await currentProfilePages(req);
-    const { content, fileUrl, fileType } = req.body;
+    const { content, fileUrl } = req.body;
     const { conversationId } = req.query;
 
     if (!profile) {

@@ -68,7 +68,7 @@ export const EditChannelModal = () => {
       form.setValue("name", channel.name);
       form.setValue("type", channel.type);
     }
-  }, [form, channel?.id, channel?.name, channel?.type, isModalOpen]);
+  }, [form, channel, channel?.id, channel?.name, channel?.type, isModalOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -103,7 +103,7 @@ export const EditChannelModal = () => {
             Edit Channel
           </DialogTitle>
           <DialogDescription className="text-center to-zinc-500">
-            Edit your conversation channel. Reset the name, and you're ready to
+            Edit your conversation channel. Reset the name, and you&apos;re ready to
             go.
           </DialogDescription>
         </DialogHeader>
