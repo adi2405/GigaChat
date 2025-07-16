@@ -10,13 +10,12 @@ import { MediaRoom } from "@/components/media-room";
 
 interface MemberIdPageProps {
   params: Promise<{ memberId: string; serverId: string }>;
-  searchParams: {
-    video?: boolean;
-  };
+  searchParams: Promise<{ video?: boolean }>;
 }
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const { memberId, serverId } = await params;
+  const { video } = await searchParams;
   const profile = await currentProfile();
 
   if (!profile) {
@@ -59,10 +58,10 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
         serverId={serverId}
         type="conversation"
       />
-      {searchParams.video && (
+      {video && (
         <MediaRoom chatId={conversation.id} video={true} audio={true} />
       )}
-      {!searchParams.video && (
+      {!video && (
         <>
           <ChatMessages
             member={currentMember}
