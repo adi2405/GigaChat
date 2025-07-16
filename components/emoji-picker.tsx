@@ -2,7 +2,7 @@
 
 import { Smile } from "lucide-react";
 import EmojiPickerReact, { EmojiClickData, Theme } from "emoji-picker-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
@@ -15,10 +15,22 @@ interface EmojiPickerProps {
 
 export const EmojiPicker = ({ onChange, className }: EmojiPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
     onChange(emojiData.emoji);
+    setIsOpen(false);
   };
 
   return (
@@ -32,14 +44,26 @@ export const EmojiPicker = ({ onChange, className }: EmojiPickerProps) => {
         />
       </PopoverTrigger>
       <PopoverContent
-        side="right"
-        sideOffset={40}
-        className="bg-transparent border-none shadow-none drop-shadow-none mb-16"
+        side={isMobile ? "top" : "right"}
+        align={isMobile ? "end" : "start"}
+        className={cn(
+          "bg-transparent border-none shadow-none drop-shadow-none",
+          isMobile ? "mb-4" : "mb-16"
+        )}
+        style={{
+          width: isMobile ? "min(350px, 90vw)" : "auto",
+          maxWidth: isMobile ? "90vw" : "none",
+        }}
       >
         <EmojiPickerReact
           onEmojiClick={handleEmojiClick}
           theme={resolvedTheme as Theme}
           lazyLoadEmojis
+          width={isMobile ? "min(350px, 90vw)" : 350}
+          height={isMobile ? 400 : 450}
+          previewConfig={{
+            showPreview: !isMobile,
+          }}
         />
       </PopoverContent>
     </Popover>

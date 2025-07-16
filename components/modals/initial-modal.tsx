@@ -2,6 +2,8 @@
 
 import * as z from "zod";
 import axios from "axios";
+import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,6 +11,7 @@ import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogTitle,
+  DialogTrigger,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -37,6 +40,7 @@ const formSchema = z.object({
 
 export const InitialModal = () => {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -52,6 +56,7 @@ export const InitialModal = () => {
     try {
       await axios.post("/api/servers", values);
       form.reset();
+      setIsOpen(false);
       setTimeout(() => {
         router.refresh();
       }, 1000);
@@ -61,8 +66,42 @@ export const InitialModal = () => {
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      form.reset();
+    }
+  };
+
   return (
-    <Dialog open>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <div className="flex flex-col h-full space-y-4 p-4 items-center justify-center">
+        <div className="bg-white rounded-full p-1">
+          <Image
+            src={"/gigachat.svg"}
+            alt="Lively"
+            height={"80"}
+            width={"80"}
+          />
+        </div>
+        <h1 className="text-5xl font-semibold p-2">
+          Giga<span className="text-indigo-500">Chat</span>
+        </h1>
+        <p className="text-center p-1">
+          Welcome to GigaChat,
+          <br />
+          let&apos;s start chatting by creating your server
+        </p>
+        <DialogTrigger asChild>
+          <Button
+            variant="primary"
+            size={"lg"}
+            className="text-base cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0"
+          >
+            Create Server
+          </Button>
+        </DialogTrigger>
+      </div>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-xl sm:text-2xl text-center font-bold">
