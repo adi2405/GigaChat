@@ -13,8 +13,9 @@ export const MobileToggle = ({ serverId }: { serverId: string }) => {
           variant={"ghost"}
           size={"icon"}
           className="md:hidden cursor-pointer"
+          asChild
         >
-          <Menu />
+          <Menu className="h-6 w-6 mr-3" />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-full p-0 gap-0">

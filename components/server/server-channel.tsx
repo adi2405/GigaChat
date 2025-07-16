@@ -61,11 +61,11 @@ export const ServerChannel = ({
         <div className="ml-auto flex items-center gap-x-2">
           <Edit
             onClick={(e) => onAction(e, "editChannel")}
-            className="opacity-0 group-hover:opacity-100 h-4 w-4 text-zinc-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-500 transition"
+            className="h-4 w-4 text-zinc-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-500 transition"
           />
           <Trash
             onClick={(e) => onAction(e, "deleteChannel")}
-            className="opacity-0 group-hover:opacity-100 h-4 w-4 text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-500 transition"
+            className="h-4 w-4 text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-500 transition"
           />
         </div>
       )}
